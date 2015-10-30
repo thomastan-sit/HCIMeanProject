@@ -1,0 +1,247 @@
+<!--<section data-ng-controller="CarparksController" data-ng-init="find()">-->
+<section data-ng-controller="CarparksController">
+    <!--
+    <div class="page-header">
+        <h1>Carparks</h1>
+    </div>
+    -->
+    <div>
+        <!--DO NOT REMOVE-->
+        <input hidden id="submit" type="submit" value="Search" ng-click="searchLocation(location)"/>
+        <!--<input type="text" placeholder="Address"  ng-model="location" />
+        <input type="submit" Value="Current Location" ng-click ="currentLocation()"/><br/>-->
+        <!--
+        <input  type="text" placeholder="Address"  ng-model="location" />
+        {{message}}
+        <input type="submit" value="Search" ng-click = "searchLocation(location)"/>
+        <input type="text" placeholder="Address"  ng-model="location" />
+        <input id="submit" type="submit" value="Search" ng-click = "searchLocation(location)"/>
+        <input type="submit" Value="Current Location" ng-click ="currentLocation()"/><br/>
+        <input type="text" placeholder="Origin" ng-model="origin">
+        <input type="text" placeholder="Destination" ng-model="destination">
+        <input type="submit" value="Route" ng-click="route(origin,destination)"><br/>
+        -->
+        <div id="map_canvas">
+            <map id="map" style="height:550px;" center="current-location" zoom="17" disable-default-u-i="true">
+                <marker id="foo" animation="DROP" position="1.302004,103.779629" icon="\modules\core\img\parking-icon.png"
+                        on-click="showInfoWindow(event,'parkingInfo')"></marker>
+                <marker id="" animation="DROP" position="1.302701,103.777164" icon="\modules\core\img\parking-icon.png"
+                        on-click="showInfoWindow(event,'parkingInfo2')"></marker>
+                <marker id="" animation="DROP" position="1.303211,103.778119" icon="\modules\core\img\parking-icon.png"
+                        on-click="showInfoWindow(event,'parkingInfo3')"></marker>
+                <marker id="" animation="DROP" position="1.303806,103.780401" icon="\modules\core\img\parking-icon.png"
+                        on-click="showInfoWindow(event,'parkingInfo4')"></marker>
+                <marker id="" animation="DROP" position="1.302336,103.781528" icon="\modules\core\img\parking-icon.png"
+                        on-click="showInfoWindow(event,'parkingInfo5')"></marker>
+                <!--
+                <info-window id="parkingInfo" visible-on-marker="foo">
+                    <div ng-non-bindable="">
+                        <div id="siteNotice"></div>
+                        <h2 id="firstHeading" class="firstHeading">ACS</h2>
+                        <div id="bodyContent">
+                            <p>Rate: $2/hr</p>
+                            <p>Lots available: 20</p>
+                        </div>
+                    </div>
+                </info-window>
+                <info-window id="parkingInfo2" visible-on-marker="foo">
+                    <div ng-non-bindable="">
+                        <h2 class="firstHeading">Buona Vista</h2>
+                        <div>
+                            <p>Rate: $2/hr</p>
+                            <p>Lots available: 20</p>
+                        </div>
+                    </div>
+                </info-window>
+                <info-window id="parkingInfo3" visible-on-marker="foo">
+                    <div ng-non-bindable="">
+                        <h2 class="firstHeading">Singapore Polytechnic</h2>
+                        <div>
+                            <p>Rate: $2/hr</p>
+                            <p>Lots available: 2</p>
+                        </div>
+                    </div>
+                </info-window>
+                <info-window id="parkingInfo4" visible-on-marker="foo">
+                    <div ng-non-bindable="">
+                        <h2 class="firstHeading">Block 435 Buona Vista</h2>
+                        <div>
+                            <p>Rate: $2/hr</p>
+                            <p>Lots available: 20</p>
+                        </div>
+                    </div>
+                </info-window>
+                <info-window id="parkingInfo5" visible-on-marker="foo">
+                    <div ng-non-bindable="">
+                        <h2 class="firstHeading">Block 06 Dover Road</h2>
+                        <div>
+                            <p>Rate: $2/hr</p>
+                            <p>Lots available: 20</p>
+                        </div>
+                    </div>
+                </info-window>
+                -->
+                <custom-control id="home" position="TOP_CENTER" index="1" on-click="click()">
+                    <input class="form-control" style="padding-left: 5px; display: inline;" id="search" type="text"
+                           placeholder="Search Address" ng-model="location" height="48"
+                           onkeydown="if (event.keyCode == 13) document.getElementById('submit').click()"/>
+                    <button class="btn btn-primary" type="button" onclick="document.getElementById('submit').click()">Search</button>
+                </custom-control>
+                <custom-control data-toggle="modal" data-target="#routeModal" id="route" position="RIGHT_BOTTOM" index="1" on-click="click()">
+                    <input type="image" src="/modules/core/img/logo/routebutton.png"/><br/>
+                </custom-control>
+                <custom-control id="current" position="RIGHT_BOTTOM" index="0" on-click="click()">
+                    <input type="image" src="/modules/core/img/logo/gps2 copy.png" ng-click="currentLocation()"/><br/>
+                </custom-control>
+            </map>
+        </div>
+
+        <!--MODAL TO DISPLAY ROUTE FORM -->
+        <div class="modal fade" id="routeModal" tabindex="-1" role="dialog" aria-labelledby="routeModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="routeModalLabel">Route</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <!--<div class="input-group">
+                                <span class="label label-default">From</span>
+                                <input type="text" id="originInput" class="form-control" placeholder="Origin" ng-model="origin">
+                                <span class="input-group-btn">
+                                    <button id="currentLocationBtn" style="margin-top:20px;" class="btn btn-primary" ng-click="currentLocationAddress()" type="button">CL</button>
+                                </span>
+                            </div>-->
+                            <span class="label label-default">From</span>
+                            <input type="text" id="originInput" class="form-control" placeholder="Origin" ng-model="origin">
+                            <span class="label label-default">To</span>
+                            <input required type="text" id="destinationInput" class="form-control" placeholder="Destination" ng-model="destination">
+                        </form>
+                        <div>
+                            <!--INSERT SEARCH RECENT HISTORY-->
+                            <table class="table table-hover">
+                                <tr>
+                                    <th colspan="3" style="text-align:center;">Search History</th>
+                                </tr>
+                                <!--<tr ng-repeat="">
+                                    INSERT CODE
+                                </tr>-->
+                            </table>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="button" id="routeButton" data-toggle="modal" class="btn btn-primary"
+                                data-dismiss="modal" ng-click="route(origin,destination)">Route
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--MODAL TO DISPLAY ROUTE LIST FORM -->
+        <div class="modal fade" id="routeListModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">Route List</h4>
+                    </div>
+                    <div class="modal-body">
+                        <span class="label label-default">From</span>
+                        <input type="text" disabled class="form-control" placeholder="Origin" value="{{origin}}"
+                               ng-model="origin">
+                        <span class="label label-default">To</span>
+                        <input type="text" disabled class="form-control" placeholder="Destination"
+                               value="{{destination}}" ng-model="destination"><br/>
+                        <div>
+                            <!--INSERT ROUTE TO DESTINATION/CARPARK-->
+                        </div>
+                        <div>
+                            <table id="routeListTable" class="table table-hover">
+                                <tr>
+                                    <th colspan="3" style="text-align:center;">Route List</th>
+                                </tr>
+                                <tr id="routeTR{{$index}}" ng-repeat="routes in routesDistDurObjArr track by $index"
+                                    data-dismiss="modal" ng-click="showChosenRoute($index)">
+                                    <th>Route {{$index+1}}</th>
+                                    <td>distance: {{routes.routeDistance}}km</td>
+                                    <td>duration: {{routes.routeDuration}}minutes</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#routeModal" data-dismiss="modal">Back</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--MODAL TO DISPLAY ERROR MESSAGE-->
+    <div class="modal fade" id="errorModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Error</h4>
+                </div>
+                <div class="modal-body">
+                    No results found. Please try again!
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="errorRouteModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Error</h4>
+                </div>
+                <div class="modal-body">
+                    No results found. Please try again!
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" data-toggle="modal" data-target="#routeModal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div>
+        <!--INSERT INFORMATION REGARDING LOCATION-->
+    </div>
+
+    <div>
+        <!--INSERT INFORMATION REGARDING ROUTE-->
+    </div>
+    <button data-toggle="modal" data-target="#routeListModal">SHOW ROUTE LIST</button>
+
+    <!--
+    <div class="list-group">
+        <a data-ng-repeat="carpark in carparks" data-ng-href="#!/carparks/{{carpark._id}}" class="list-group-item">
+			<small class="list-group-item-text">
+				Posted on
+				<span data-ng-bind="carpark.created | date:'medium'"></span>
+				by
+				<span data-ng-bind="carpark.user.displayName"></span>
+			</small>
+			<h4 class="list-group-item-heading" data-ng-bind="carpark.name"></h4>
+        </a>
+    </div>
+
+    <div class="alert alert-warning text-center" data-ng-hide="!carparks.$resolved || carparks.length">
+    	No Carparks yet, why don't you <a href="/#!/carparks/create">create one</a>?
+    </div>-->
+</section>
